@@ -1,0 +1,44 @@
+version: '3.4'  # Update this to at least 3.4 to use healthcheck conditions
+services:
+  database:
+    image: mysql:latest
+    ports: 
+      - "3306:3306"
+    networks:
+      - mynetwork
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_ROOT_USER: root
+      MYSQL_DATABASE: rentify
+    volumes:
+       - mysqllogs:/var/lib/mysql
+    healthcheck:
+      test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s  # Gives MySQL more time to initialize before health checks start
+
+  app:
+    build: .
+    ports:
+      - "9090:8080"
+    networks:
+      - mynetwork
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/rentify?createDatabaseIfNotExist=true&sessionVariables=sql_mode='NO_ENGINE_SUBSTITUTION'&jdbcCompliantTruncation=false
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+    volumes:
+       - ./log.txt:/runDockerSpringBoot/log.txt
+    depends_on:
+      database:
+        condition: service_healthy
+
+      
+networks:
+  mynetwork:
+  
+volumes:
+   mysqllogs:
+   springbootlogs:
