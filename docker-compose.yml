@@ -45,6 +45,3 @@ networks:
 volumes:
    mysqllogs:
    springbootlogs:
-
-networks:
-  mynetwork:
