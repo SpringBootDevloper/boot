@@ -36,9 +36,10 @@ services:
         condition: service_healthy
         
   ui:
+     build: ./ui
      ports:
        - "4300:80"
-     build: ./ui
+     
 networks:
   mynetwork:
   
