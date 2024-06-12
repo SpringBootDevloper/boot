@@ -37,7 +37,7 @@ services:
         
   ui:
      ports:
-       "4300:80"
+       - "4300:80"
      build: ./ui
 networks:
   mynetwork:
