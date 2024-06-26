@@ -54,7 +54,7 @@ public class SecurityFilterChainConfig{
 	private static CorsConfigurationSource getConfigurationSource() {
 		var corsConfiguration = new CorsConfiguration();
 		corsConfiguration.setAllowedMethods(List.of("*"));
-		corsConfiguration.setAllowedOrigins(List.of("http://localhost:4200"));
+		corsConfiguration.setAllowedOrigins(List.of("*"));
 	    corsConfiguration.setAllowedHeaders(List.of("Content-Type", "Authorization"));
 		var source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**",corsConfiguration);

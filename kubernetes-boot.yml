@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: spring
+  template:
+    metadata:
+      labels:
+        app: spring
+    spec:
+      containers:
+      # - name: mysql
+      #   image: mysql:latest
+      #   imagePullPolicy: IfNotPresent
+      #   env:
+      #     - name: MYSQL_ROOT_PASSWORD
+      #       value: 'root'
+          # - name: MYSQL_DATABASE
+          #   value: 'rentify'
+      - name: spring-container
+        image: infinity523/rentify:latest
+        imagePullPolicy: IfNotPresent
+
+      # - name: angular-container
+      #   image: infinity523/ui:latest
+      #   imagePullPolicy: IfNotPresent
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  # Unique key of the Service instance
+  name: bootservice
+spec:
+  ports:
+    # Accept traffic sent to port 80
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    # Loadbalance traffic across Pods matching
+    # this label selector
+    app: spring
+  # Create an HA proxy in the cloud provider
+  # with an External IP address - *Only supported
+  # by some cloud providers*
+  type: LoadBalancer

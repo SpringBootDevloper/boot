@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+   name: db-conf #config map name
+data:
+    host: mysql
+    name: rentify

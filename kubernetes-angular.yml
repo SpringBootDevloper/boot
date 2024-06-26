@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: angular
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ui
+  template:
+    metadata:
+      labels:
+        app: ui
+    spec:
+      containers:
+      # - name: mysql
+      #   image: mysql:latest
+      #   imagePullPolicy: IfNotPresent
+      #   env:
+      #     - name: MYSQL_ROOT_PASSWORD
+      #       value: 'root'
+          # - name: MYSQL_DATABASE
+          #   value: 'rentify'
+      - name: angular-container
+        image: infinity523/ui:v600
+        imagePullPolicy: IfNotPresent
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  # Unique key of the Service instance
+  name: angularservice
+spec:
+  ports:
+    # Accept traffic sent to port 80
+    - name: http
+      port: 9090
+      targetPort: 80
+  selector:
+    # Loadbalance traffic across Pods matching
+    # this label selector
+    app: ui
+  # Create an HA proxy in the cloud provider
+  # with an External IP address - *Only supported
+  # by some cloud providers*
+  type: LoadBalancer
