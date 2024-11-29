@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.presidio.hiringchallenge.producer.EmailProducer;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,6 +44,8 @@ public class UserService implements UserInterface {
 	AesEncryption encrytion;
     @Autowired
     AuthenticationManager authenticationManager;
+	@Autowired
+	EmailProducer emailProducer;
 	@Value("${from}")
 	String from;
 
@@ -179,6 +182,7 @@ public class UserService implements UserInterface {
 					authorities.add(new SimpleGrantedAuthority(Roles.ROLE_BOTH.name()));
 					verifyUser.setAuthorities(authorities);
 					userRepo.save(verifyUser);
+					emailProducer.sendEmailMessageToExchange("User Details Saved "+email);
 					return new ApiResponse(200, "USER VERIFIED", "null", null);
 				}
 				else 

@@ -42,7 +42,8 @@ public class SecurityFilterChainConfig{
 		httpSecurity.authorizeHttpRequests(auth -> {
 			auth.requestMatchers("/rentify/registerUser","/rentify/verify/**",
 					"/rentify/getProperties"
-					,"/rentify/login").permitAll().
+					,"/rentify/login","/swagger-ui/**", "/v3/api-docs/**", "/swagger-resources/**", "/webjars/**"
+					).permitAll().
 			anyRequest().authenticated();
 		});
 		httpSecurity.exceptionHandling(exceptionConfig -> exceptionConfig.authenticationEntryPoint(AuthenticationEntryPoint));
